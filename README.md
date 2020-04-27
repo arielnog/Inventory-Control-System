@@ -6,7 +6,7 @@
 <hr>
 <img src="amostragem5.gif" />
 
-## Installation
+## Instalação
 
 ``` bash
 
