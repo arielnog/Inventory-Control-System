@@ -91,6 +91,11 @@ import axios from "axios";
             self.message = 'Incorrect E-mail or password';
             self.showMessage = true;
             console.log(error);
+              self.$swal({
+							icon: 'error',
+							title: 'Oops...',
+							text: 'Usuário ou senha incorretos!'
+						})
           });
   
         }

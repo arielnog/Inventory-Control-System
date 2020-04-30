@@ -50,7 +50,7 @@
             placeholder="Digite o preço unitário"></money>
           </b-form-group>
 
-          <b-button type="submit" variant="primary" size="lg" style="float: right; margin-top: 30px">Confirmar</b-button>
+          <b-button type="submit" :disabled="submitting" variant="primary" size="lg" style="float: right; margin-top: 30px">{{value}}</b-button>
         </b-form>
     </b-modal>
 
@@ -176,7 +176,7 @@
             placeholder="Digite o valor do desconto"></money>
           </b-form-group>
 
-          <b-button type="submit" variant="primary" size="lg" style="float: right; margin-top: 30px">Confirmar</b-button>
+          <b-button type="submit" :disabled="submitting" variant="primary" size="lg" style="float: right; margin-top: 30px">{{value}}</b-button>
         </b-form>
     </b-modal>
 
@@ -199,7 +199,7 @@
             >
           </b-form-group>
 
-          <b-button type="submit" variant="primary" size="lg" style="float: right; margin-top: 30px">Confirmar</b-button>
+          <b-button type="submit" :disabled="submitting" variant="primary" size="lg" style="float: right; margin-top: 30px">{{value}}</b-button>
         </b-form>
     </b-modal>
 
@@ -346,7 +346,9 @@ export default {
             cpf	: '',
             cnpj	: '',
             discount: ''
-        } 
+        },
+      submitting: false,
+      value: 'Confirmar' 
     }
   },
   computed: {
@@ -361,12 +363,15 @@ export default {
         }
 
       },
-    	onSubmit(evt) {
-			evt.preventDefault()
+    	async onSubmit(evt) {
+      evt.preventDefault()
+      this.submitting = true;
+      this.value = 'Enviando...';
       var metodo = this.id ? 'patch' : 'post'
       var finalUrl = this.id ? `/${this.id}` : ''
       
-			axios[metodo](`/api/products${finalUrl}?token=` + localStorage.getItem("api_token"), this.form)
+      
+			await axios[metodo](`/api/products${finalUrl}?token=` + localStorage.getItem("api_token"), this.form)
 			.then(resp => {
           this.getProducts();
           this.$bvModal.hide('modal-prevent-closing-modify')
@@ -384,6 +389,8 @@ export default {
 							text: 'Ocorreu um erro!'
 						})
         })
+      this.value = 'Confirmar';
+      this.submitting = false;
 			},
 		onReset() {
         this.id = null
@@ -473,14 +480,16 @@ export default {
         this.form = {...this.items.find(product => product.id === id)}
         this.$bvModal.show('modal-multi-3')
     },
-    addQuantityProduct(evt) {
-			evt.preventDefault()
+    async addQuantityProduct(evt) {
+      evt.preventDefault()
+      this.submitting = true;
+      this.value = 'Enviando...';
       var metodo = 'patch' 
       var finalUrl = `/${this.id}`
       this.form.quantity_in_stock = this.form.quantity_in_stock + parseInt(this.quantity_add)
       this.form.quantity_add_report = parseInt(this.quantity_add)
 
-			axios[metodo](`/api/productsAddQuantity${finalUrl}?token=` + localStorage.getItem("api_token"), this.form)
+			await axios[metodo](`/api/productsAddQuantity${finalUrl}?token=` + localStorage.getItem("api_token"), this.form)
 			.then(resp => {
           this.getProducts();
           this.$bvModal.hide('modal-prevent-closing-add')
@@ -499,6 +508,8 @@ export default {
 							text: 'Ocorreu um erro!'
 						})
         })
+      this.value = 'Confirmar';
+      this.submitting = false;
       },
       onResetFormSell(){
         this.formSell.quantity = ''
@@ -511,13 +522,16 @@ export default {
       openModalSell(){
         this.onResetFormSell()
         this.$bvModal.show('modal-prevent-closing-sell')
-      },sellProduct(evt) {
-			evt.preventDefault()
+      },
+      async sellProduct(evt) {
+      evt.preventDefault()
+      this.submitting = true;
+      this.value = 'Enviando...';
       var metodo = 'patch' 
       var finalUrl = `/${this.id}`
       this.form.quantity_in_stock = this.form.quantity_in_stock + parseInt(this.quantity_add)
 
-			axios[metodo](`/api/productsSell${finalUrl}?token=` + localStorage.getItem("api_token"), this.formSell)
+			await axios[metodo](`/api/productsSell${finalUrl}?token=` + localStorage.getItem("api_token"), this.formSell)
 			.then(resp => {
           this.getProducts();
           this.$bvModal.hide('modal-prevent-closing-sell')
@@ -536,6 +550,8 @@ export default {
 							text: 'Ocorreu um erro!'
 						})
         })
+      this.value = 'Confirmar';
+      this.submitting = false;
 			},
   },
   mounted: function(){

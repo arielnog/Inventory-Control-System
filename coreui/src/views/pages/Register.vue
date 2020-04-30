@@ -44,7 +44,7 @@
               <CCardFooter class="p-4">
                 <CRow>
                   <CCol col="6">
-                    <CButton type="submit" color="success" block>Create Account</CButton>
+                    <CButton type="submit" color="success" block>{{value}}</CButton>
                   </CCol>
                   <CCol col="6">
                     <CButton @click="$router.push({ path: 'login' });" block color="facebook">
@@ -71,13 +71,17 @@
           name: '',
           email: '',
           password: '',
-          password_confirmation: ''
+          password_confirmation: '',
+          submitting: false,
+          value: 'Create Account' 
         }
       },    
       methods: {
-        register() {
+        async register() {
           var self = this;
-          axios.post(  '/api/register', {
+          this.submitting = true;
+          this.value = 'Registrando...';
+          await axios.post(  '/api/register', {
             name: self.name,
             email: self.email,
             password: self.password,
@@ -92,8 +96,14 @@
           })
           .catch(function (error) {
             console.log(error);
+              self.$swal({
+							icon: 'error',
+							title: 'Oops...',
+							text: 'Ocorreu um erro!'
+						})
           });
-  
+          this.value = 'Create Account';
+          this.submitting = false;
         }
       }
     }

@@ -40,13 +40,7 @@ export default {
           data: []
         }
       ],
-      data1: [],
-      data2: [],
-    }
-  },
-  computed: {
-    defaultOptions () {
-      return {
+      defaultOptions: {
 
         maintainAspectRatio: false,
         legend: {
@@ -61,9 +55,9 @@ export default {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              maxTicksLimit: 5,
-              stepSize: Math.ceil(100000 / 5),
-              max: 100000
+              maxTicksLimit: 15,
+              stepSize: null,
+              max: null
             },
             gridLines: {
               display: true
@@ -78,7 +72,10 @@ export default {
             hoverBorderWidth: 3
           }
         }
-      }
+      },
+      data1: [],
+      data2: [],
+      max: null
     }
   },
   methods: {
@@ -104,7 +101,7 @@ export default {
             self.data2.push(item)
         }
 
-
+        self.max = parseInt(Math.max(...self.data2)) + 1000
         //console.log(response.data)
 
       }).catch(function (error) {
@@ -118,6 +115,9 @@ export default {
   },
   watch: {
     data2 (newData) {
+      this.defaultOptions.scales.yAxes[0].ticks.max = this.max
+      this.defaultOptions.scales.yAxes[0].ticks.stepSize = Math.ceil(this.max / 5)
+
       this.defaultDatasets = [
         { 
           label: 'Gastos',
@@ -128,7 +128,7 @@ export default {
           data: this.data1
         },
         {
-          label: 'Vendas',
+          label: 'Lucros',
           backgroundColor: 'transparent',
           borderColor: getStyle('success2') || '#4dbd74',
           pointHoverBackgroundColor: getStyle('success2') || '#4dbd74',

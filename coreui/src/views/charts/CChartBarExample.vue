@@ -32,8 +32,8 @@ export default {
             ticks: {
               beginAtZero: true,
               maxTicksLimit: 15,
-              stepSize: Math.ceil(100000 / 5),
-              max: 100000
+              stepSize: null,
+              max: null
             }
           }]
         }
@@ -53,16 +53,13 @@ export default {
       axios.get(  '/api/getDataChartLucroVendas?token=' + localStorage.getItem("api_token") )
       .then(function (response) {     
 
-       // self.dataChart = response.data
-        let max = Math.max(...self.dataChart)
-
         response.data.forEach(myFunction);
 
         function myFunction(item, index) {
             self.dataChart.push(item)
         }
-
-        //console.log(self.dataChart)
+        
+        self.max = parseInt(Math.max(...self.dataChart)) + 1000
 
       }).catch(function (error) {
         console.log(error);
@@ -75,9 +72,12 @@ export default {
   },
   watch: {
     dataChart (newData) {
+      this.defaultOptions.scales.yAxes[0].ticks.max = this.max
+      this.defaultOptions.scales.yAxes[0].ticks.stepSize = Math.ceil(this.max / 5)
       const opera = this.defaultDatasets
       opera[0].data = newData
       this.defaultDatasets = [...opera]
+      
     }
   }
 }

@@ -11,9 +11,11 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueTheMask from 'vue-the-mask'
 import Vuetify from 'vuetify'
+import babelPolyfill from 'babel-polyfill'
  
 Vue.use(Vuetify)
 Vue.use(VueTheMask)
+Vue.use(babelPolyfill)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueSweetalert2);
