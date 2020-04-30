@@ -44,7 +44,7 @@
               <CCardFooter class="p-4">
                 <CRow>
                   <CCol col="6">
-                    <CButton type="submit" color="success" block>{{value}}</CButton>
+                    <CButton type="submit" color="success" :disabled="submitting" block>{{value}}</CButton>
                   </CCol>
                   <CCol col="6">
                     <CButton @click="$router.push({ path: 'login' });" block color="facebook">
