@@ -75,6 +75,7 @@ export default {
       },
       data1: [],
       data2: [],
+      dataMax:[],
       max: null
     }
   },
@@ -93,15 +94,17 @@ export default {
 
         function myFunction(item, index) {
             self.data1.push(item)
+            self.dataMax.push(item)
         }
 
         response.data[0].Vendas.forEach(myFunctionTwo);
 
         function myFunctionTwo(item, index) {
             self.data2.push(item)
+            self.dataMax.push(item)
         }
 
-        self.max = parseInt(Math.max(...self.data2)) + 1000
+        self.max = parseInt(Math.max(...self.dataMax)) + 1000
         //console.log(response.data)
 
       }).catch(function (error) {
