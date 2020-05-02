@@ -93,19 +93,19 @@ export default {
         response.data[0].Compra.forEach(myFunction);
 
         function myFunction(item, index) {
-            self.data1.push(item)
+            self.data1.push(item.toFixed(2))
             self.dataMax.push(item)
         }
 
         response.data[0].Vendas.forEach(myFunctionTwo);
 
         function myFunctionTwo(item, index) {
-            self.data2.push(item)
+            self.data2.push(item.toFixed(2))
             self.dataMax.push(item)
         }
 
         self.max = parseInt(Math.max(...self.dataMax)) + 1000
-        //console.log(response.data)
+        //console.log(self.data2)
 
       }).catch(function (error) {
         console.log(error);

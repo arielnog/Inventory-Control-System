@@ -56,7 +56,7 @@ export default {
         response.data.forEach(myFunction);
 
         function myFunction(item, index) {
-            self.dataChart.push(item)
+            self.dataChart.push(item.toFixed(2))
         }
         
         self.max = parseInt(Math.max(...self.dataChart)) + 1000
