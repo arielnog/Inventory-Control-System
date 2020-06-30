@@ -3,11 +3,13 @@
     ref="chart"
     :datasets="operations"
     :labels="['Compras', 'Vendas']"
+    :options="options"
   />
 </template>
 
 <script>
 import { CChartDoughnut } from '@coreui/vue-chartjs'
+import 'chartjs-plugin-labels'
 import axios from 'axios'
 
 export default {
@@ -24,7 +26,32 @@ export default {
           data: []
         }
       ],
-      dataChart: []
+      dataChart: [],
+      options: {
+        cutoutPercentage: 55,
+          plugins: {
+            labels: {
+              // render 'label', 'value', 'percentage', 'image' or custom function, default is 'percentage'
+              render: 'percentage',
+
+              // precision for percentage, default is 0
+              precision: 2,
+
+              // font size, default is defaultFontSize
+              fontSize: 12,
+
+              // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
+              fontColor: '#fff',
+
+              // font style, default is defaultFontStyle
+              fontStyle: 'normal',
+
+              // font family, default is defaultFontFamily
+              fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+            }
+          }
+        }
     }
   },
   methods: {
