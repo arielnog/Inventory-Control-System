@@ -46,6 +46,9 @@ $ cd ../coreui
 # Instale as dependências
 $ npm install
 
+# Abra a pasta node_modules/axios/lib, abra o arquivo axios.js e adicione está linha antes do (module.exports = axios)
+$ axios.defaults.baseURL = "http://127.0.0.1:8000";
+
 # Execute o seguinte comando para subir o servidor do front-end:
 $ npm run serve
 
